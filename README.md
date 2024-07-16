@@ -1,3 +1,1 @@
-001. Main Page
-S. 24JULM -
--1 Favicon
+[] fix netlify error 2024.07.17 수
