@@ -27,6 +27,53 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+
+.container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f9;
+}
+
+.backgroundDesktop2,
+.backgroundMobil {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left:0;
+  z-index: 0;
+}
+
+.linkButton {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px 0;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.linkButton:hover {
+  background-color: #0056b3;
+}
+
+.linkContainer {
+  position: relative;
+  z-index: 1;
+  /*text-align: center;*/
+  /*margin-top: 20px;*/
+}
+
 /*
 body {
   color: rgb(var(--foreground-rgb));
