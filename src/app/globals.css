@@ -9,8 +9,8 @@
     background-image: url("/main.jpg");
     margin: 0;
     padding: 0;
-    width: 100%;
-    height: 100vh;
+    width: 100vw; /* 뷰포트 전체 너비 */
+    height: 100vh; /* 뷰포트 전체 높이 */
   }
 }
 
@@ -28,10 +28,18 @@
   }
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
 .container {
   position: relative;
   height: 100vh;
-  width: 100%;
+  width: 100vw; /* 뷰포트 전체 너비 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -39,13 +47,24 @@
 }
 
 .backgroundDesktop2,
-.backgroundMobil {
+.backgroundMobile {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100vw; /* 뷰포트 전체 너비 */
+  height: 100vh; /* 뷰포트 전체 높이 */
   top: 0;
-  left:0;
+  left: 0;
   z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.linkContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 .linkButton {
@@ -67,26 +86,14 @@
   background-color: #0056b3;
 }
 
-.linkContainer {
-  position: relative;
-  z-index: 1;
-  /*text-align: center;*/
-  /*margin-top: 20px;*/
-}
-
-/*
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* 모바일 환경 */
+@media (max-width: 1023px) {
+  .backgroundMobile {
+    display: block;
+    background-image: url("/letzcell.jpg");
   }
-}*/
+
+  .backgroundDesktop2 {
+    display: none;
+  }
+}
