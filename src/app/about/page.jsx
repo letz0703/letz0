@@ -1,8 +1,8 @@
 //import styles from './page.module.css'
-export default function Shop(){
+export default function Page(){
 	return (
 		<div>
-			<h2>Shop</h2>
+			<h2>About</h2>
 		</div>
 	)
 }
