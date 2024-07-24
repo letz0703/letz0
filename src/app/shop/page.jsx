@@ -1,15 +1,16 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { database } from "@/api/firebase";
 import { get, ref } from "firebase/database";
-import styles from './page.module.css'; // CSS 파일을 임포트
+import styles from './Page.module.css'; // CSS 파일을 임포트
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
   const [japitems, setJapitems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredJapitems, setFilteredJapitems] = useState([]);
+  const searchInputRef = useRef(null); // 검색 입력창의 ref
 
   async function getRemoteJapitems() {
     await get(ref(database, 'japitems'))
@@ -34,6 +35,12 @@ export default function Page() {
     getRemoteJapitems();
   }, []);
 
+  useEffect(() => {
+    if (searchInputRef.current) {
+      searchInputRef.current.focus(); // 페이지 로딩 시 검색 입력창에 포커스
+    }
+  }, []);
+
   const debounce = (func, delay) => {
     let debounceTimer;
     return function(...args) {
@@ -46,9 +53,15 @@ export default function Page() {
   const handleSearch = useCallback(
     debounce((searchTerm) => {
       setFilteredJapitems(
-        japitems.filter(item =>
-          item.name.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        japitems.filter(item => {
+          const term = searchTerm.toLowerCase();
+          return (
+            item.name.toLowerCase().includes(term) ||
+            item.description.toLowerCase().includes(term) ||
+            item.enName.toLowerCase().includes(term) ||
+            item.price.toString().includes(term)
+          );
+        })
       );
     }, 300),
     [japitems]
@@ -59,18 +72,24 @@ export default function Page() {
   }, [searchTerm, handleSearch]);
 
   return (
-    <div style={{ textAlign: 'center', padding: '20px' }}>
+    <div className={styles.pageContainer}>
       {isLoading ? (
         <h2>Loading...</h2>
       ) : (
         <div>
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className={styles.searchInput}
-          />
+          <div className={`${styles.searchContainer} mt-10 mb-10`}> {/* Tailwind CSS로 상하 마진 추가 */}
+            <span className={styles.searchIcon}>
+              <img src="/images/search-48.png" alt="Search Icon" className={styles.searchIconImage} />
+            </span>
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={`${styles.searchInput} mt-10 mb-10 pl-10`} // Tailwind CSS로 상하 마진 추가 및 좌측 패딩 추가
+              ref={searchInputRef} // ref 연결
+            />
+          </div>
           <div className={styles.gridContainer}>
             {filteredJapitems.map((item, index) => (
               <div key={index} className={styles.itemCard}>
@@ -78,7 +97,7 @@ export default function Page() {
                   <img src={`/images/${item.imgs}`} alt={item.name} className={styles.itemImage} />
                   <p>{item.name}</p>
                   <p>{item.price}</p>
-                  <p>{item.enName}</p> {/* 영문 타이틀 추가 */}
+                  <p>{item.enName}</p>
                   <p>{item.description}</p>
                 </a>
               </div>

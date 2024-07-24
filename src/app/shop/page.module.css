@@ -1,30 +1,63 @@
+.pageContainer {
+  text-align: center;
+  padding: 20px;
+}
+
+.searchContainer {
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+  margin: 50px auto; /* 검색창 위와 아래에 더 큰 간격 추가 */
+  display: flex;
+  align-items: center;
+}
+
 .searchInput {
-  padding: 15px;
-  margin: 20px 0;
+  width: 100%;
+  padding: 20px 20px 20px 40px; /* 좌측 패딩을 늘려서 검색 아이콘 공간 추가 */
   border-radius: 25px;
   border: 2px solid #c10002;
   outline: none;
-  width: 80%;
-  max-width: 800px;
   font-size: 16px;
+  transition: width 0.3s ease; /* 입력 시 너비 변경에 대한 전환 효과 */
+}
+
+.searchInput:focus {
+  width: 100%; /* 포커스 시 검색창의 너비를 100%로 설정 */
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.searchIconImage {
+  width: 24px; /* 아이콘 크기 조정 */
+  height: 24px; /* 아이콘 크기 조정 */
 }
 
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 최소 크기를 조정하여 크기 증가 */
+  gap: 30px; /* 카드들 사이의 간격 증가 */
   max-width: 1000px;
   margin: 0 auto;
+  justify-items: center; /* 가운데 정렬 */
+  justify-content: center; /* 가운데 정렬 */
 }
 
 .itemCard {
   border: 1px solid #ddd;
   border-radius: 5px;
-  padding: 10px;
+  padding: 20px; /* 패딩 증가 */
   text-align: center; /* Center-align the text */
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 300px; /* 최대 너비를 설정하여 아이템 크기 조정 */
 }
 
 .itemImage {
@@ -32,7 +65,7 @@
   max-width: 400px;
   height: auto;
   object-fit: cover;
-  margin: 0 auto;
+  margin: 0 auto 10px; /* 아래쪽 마진 추가 */
 }
 
 @media (min-width: 1200px) {
