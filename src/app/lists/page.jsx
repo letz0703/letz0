@@ -54,11 +54,11 @@ export default function Page() {
   const handleSearch = useCallback(
     debounce((searchTerm) => {
       setFilteredLists(
-        lists.filter(item => {
+        lists?.filter(item => {
           const term = searchTerm.toLowerCase();
           return (
             item.name.toLowerCase().includes(term) ||
-            item.eName.toLowerCase().includes(term) ||
+            item.ename.toLowerCase().includes(term) ||
             item.cat.toLowerCase().includes(term)
           );
         })
