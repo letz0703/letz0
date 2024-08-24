@@ -3,12 +3,12 @@ import {getAuth, GoogleAuthProvider} from "firebase/auth";
 import {getDatabase} from "firebase/database";
 import {getFirestore} from "firebase/firestore";
 
-console.log("API Key:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
-console.log("Auth Domain:", process.env.NEXT_PUBLIC_FIREBASE_DOMAIN);
-console.log("Database URL:", process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL);
-console.log("Project ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECTID);
-console.log("Storage Bucket:", process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET);
-console.log("App ID:", process.env.NEXT_PUBLIC_FIREBASE_APPID);
+//console.log("API Key:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
+//console.log("Auth Domain:", process.env.NEXT_PUBLIC_FIREBASE_DOMAIN);
+//console.log("Database URL:", process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL);
+//console.log("Project ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECTID);
+//console.log("Storage Bucket:", process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET);
+//console.log("App ID:", process.env.NEXT_PUBLIC_FIREBASE_APPID);
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "",

@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { database } from "@/api/firebase";
 import { get, ref } from "firebase/database";
 import styles from './Page.module.css'; // CSS 파일을 임포트
+import Link from "next/link";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(true);
@@ -70,6 +71,8 @@ export default function Page() {
   useEffect(() => {
     handleSearch(searchTerm);
   }, [searchTerm, handleSearch]);
+  console.log(filteredJapitems);
+
 
   return (
     <div className={styles.pageContainer}>
@@ -93,13 +96,21 @@ export default function Page() {
           <div className={styles.gridContainer}>
             {filteredJapitems.map((item, index) => (
               <div key={index} className={styles.itemCard}>
-                <a href={item.homeUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Link
+                  href={{
+                    pathname:`/items/${item.id}`
+                    ,
+                    query: { itemId:item.id, name: item.name, price:item.price, enName:item.enName, description:item.description}
+                  }}
+                //href={item.homeUrl}
+                //target="_blank" rel="noopener noreferrer"
+                style={{ textDecoration: 'none', color: 'inherit' }}>
                   <img src={`/images/${item.imgs}`} alt={item.name} className={styles.itemImage} />
                   <p>{item.name}</p>
                   <p>{item.price}</p>
                   <p>{item.enName}</p>
                   <p>{item.description}</p>
-                </a>
+                </Link>
               </div>
             ))}
           </div>
