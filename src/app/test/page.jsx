@@ -1,13 +1,18 @@
-"use client"
+"use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, Suspense } from "react";
 import { database } from "@/api/firebase";
 import { get, ref } from "firebase/database";
 import styles from './test.module.css'; // CSS 파일을 임포트
 import Link from "next/link";
 import SearchForm from "./searchForm";
+import { useSearchParams } from "next/navigation"; // Import useSearchParams
 
 export default function Page() {
+  const searchParams = useSearchParams(); // Get searchParams using the hook
+  const itemId = searchParams.get("itemId") || ""; // Fetch itemId from searchParams
+  const query = searchParams.get("query") || ""; // Fetch query from searchParams
+
   const [isLoading, setIsLoading] = useState(true);
   const [japitems, setJapitems] = useState([]);
   const [filteredJapitems, setFilteredJapitems] = useState([]);
@@ -72,8 +77,8 @@ export default function Page() {
   useEffect(() => {
     handleSearch(searchTerm);
   }, [searchTerm, handleSearch]);
-  console.log(filteredJapitems);
 
+  console.log(filteredJapitems);
 
   return (
     <div className={styles.pageContainer}>
@@ -81,28 +86,35 @@ export default function Page() {
         <h2>Loading...</h2>
       ) : (
         <div>
-					<SearchForm itemId={filteredJapitems.id} query={searchTerm}/>
-          <div className={styles.gridContainer}>
-            {filteredJapitems.map((item, index) => (
-              <div key={index} className={styles.itemCard}>
-                <Link
-                  href={{
-                    pathname:`/items/${item.id}`
-                    ,
-                    query: { itemId:item.id, name: item.name, price:item.price, enName:item.enName, description:item.description}
-                  }}
-                //href={item.homeUrl}
-                //target="_blank" rel="noopener noreferrer"
-                style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <img src={`/images/${item.imgs}`} alt={item.name} className={styles.itemImage} />
-                  <p>{item.name}</p>
-                  <p>{item.price}</p>
-                  <p>{item.enName}</p>
-                  <p>{item.description}</p>
-                </Link>
-              </div>
-            ))}
-          </div>
+          {/* Pass setSearchTerm to SearchForm */}
+          <SearchForm userOptions="null" setSearchTerm={setSearchTerm} />
+          <Suspense key={`${itemId}-${query}`}>
+            <div className={styles.gridContainer}>
+              {filteredJapitems.map((item, index) => (
+                <div key={index} className={styles.itemCard}>
+                  <Link
+                    href={{
+                      pathname: `/items/${item.id}`,
+                      query: {
+                        itemId: item.id,
+                        name: item.name,
+                        price: item.price,
+                        enName: item.enName,
+                        description: item.description
+                      }
+                    }}
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <img src={`/images/${item.imgs}`} alt={item.name} className={styles.itemImage} />
+                    <p>{item.name}</p>
+                    <p>{item.price}</p>
+                    <p>{item.enName}</p>
+                    <p>{item.description}</p>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </Suspense>
         </div>
       )}
     </div>
