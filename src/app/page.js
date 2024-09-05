@@ -13,7 +13,7 @@ export default function Home() {
           rel="noopener noreferrer"
           target="_blank"
         >
-        부산 깡통시장 구매대행 상품 보기
+          BUYing Agent - Canmart BUSAN, KOREA
         </a>
       </div>
     </div>

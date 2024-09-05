@@ -91,7 +91,7 @@ export default function Page () {
             </span>
             <input
               type='text'
-              placeholder='택배비 3500원'
+              placeholder='Delivery 3500KRW + Fee 1000KRW for 3 items'
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               className={`${styles.searchInput} mt-10 mb-10 pl-10`} // Tailwind CSS로 상하 마진 추가 및 좌측 패딩 추가
