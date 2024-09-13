@@ -1,14 +1,7 @@
 import {initializeApp} from "firebase/app";
 import {getAuth, GoogleAuthProvider} from "firebase/auth";
-import {getDatabase} from "firebase/database";
+import {get, getDatabase, ref} from "firebase/database";
 import {getFirestore} from "firebase/firestore";
-
-//console.log("API Key:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
-//console.log("Auth Domain:", process.env.NEXT_PUBLIC_FIREBASE_DOMAIN);
-//console.log("Database URL:", process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL);
-//console.log("Project ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECTID);
-//console.log("Storage Bucket:", process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET);
-//console.log("App ID:", process.env.NEXT_PUBLIC_FIREBASE_APPID);
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "",
@@ -21,7 +14,25 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// Export Firebase services
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
 export const database = getDatabase(app);
 export const db = getFirestore(app);
+
+// Function to get japitems from Firebase Realtime Database
+export const getJapItemsFromFirebase = async () => {
+  try {
+    const japitemsRef = ref(database, 'japitems'); // 'japitems' 경로에서 데이터를 읽음
+    const snapshot = await get(japitemsRef);
+    if (snapshot.exists()) {
+      return snapshot.val(); // 데이터를 반환
+    } else {
+      return []; // 데이터가 없으면 빈 배열 반환
+    }
+  } catch (error) {
+    console.error('Error fetching japitems from Firebase:', error);
+    return []; // 에러 발생 시 빈 배열 반환
+  }
+};
