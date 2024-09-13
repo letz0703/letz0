@@ -9,6 +9,7 @@ export default function CalcPage() {
   const [barcodeInput, setBarcodeInput] = useState('')
   const [cartItems, setCartItems] = useState([])
   const [receivedAmount, setReceivedAmount] = useState(0) // 기본값 0원으로 설정
+  const [filteredItems, setFilteredItems] = useState([]); // 필터링된 아이템 상태 추가
   const [selectedDate, setSelectedDate] = useState('')
   const [history, setHistory] = useState([])
   const barcodeInputRef = useRef(null)
@@ -31,29 +32,38 @@ export default function CalcPage() {
     }
   }, [isLoading])
 
-  const handleBarcodeInput = () => {
-    const foundItem = japitems.find(item => item.code.toString() === barcodeInput.toString())
+  const handleBarcodeInput = (e) => {
+    const inputValue = e.target.value;
+    setBarcodeInput(inputValue);
 
-    if (foundItem) {
-      setCartItems(prevItems => {
-        const existingItem = prevItems.find(item => item.code === foundItem.code)
-        if (existingItem) {
-          return prevItems.map(item =>
-            item.code === foundItem.code
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          )
-        } else {
-          return [...prevItems, { ...foundItem, quantity: 1 }]
-        }
-      })
-    } else {
-      alert('Item not found!')
+    const matchedItems = japitems.filter(item =>
+      item.code.toString().includes(inputValue)
+    );
+
+    setFilteredItems(matchedItems);
+
+    if (inputValue === '') {
+      setFilteredItems([]); // 입력값이 없으면 리스트 초기화
     }
+  };
 
-    setBarcodeInput('')
-    barcodeInputRef.current.focus()
-  }
+  const handleItemClick = (item) => {
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(cartItem => cartItem.code === item.code);
+      if (existingItem) {
+        return prevItems.map(cartItem =>
+          cartItem.code === item.code
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        );
+      } else {
+        return [...prevItems, { ...item, quantity: 1 }];
+      }
+    });
+
+    setBarcodeInput(''); // 선택 후 입력창 초기화
+    setFilteredItems([]); // 선택 후 검색 결과 초기화
+  };
 
   const handleQuantityChange = (code, newQuantity) => {
     setCartItems(prevItems =>
@@ -128,7 +138,7 @@ export default function CalcPage() {
               type='text'
               placeholder='Scan or type barcode'
               value={barcodeInput}
-              onChange={e => setBarcodeInput(e.target.value)}
+              onChange={handleBarcodeInput} // 필터링된 리스트 업데이트
               onKeyPress={e => e.key === 'Enter' && handleBarcodeInput()}
               className={styles.barcodeInput}
               ref={barcodeInputRef}
@@ -136,6 +146,22 @@ export default function CalcPage() {
             <button onClick={handleBarcodeInput} className={styles.btn}>
               Add Item
             </button>
+          </div>
+
+          <div className={styles.filteredItemsContainer}>
+            {filteredItems.length > 0 && (
+              <div className={styles.suggestions}>
+                {filteredItems.map((item, index) => (
+                  <div
+                    key={index}
+                    className={styles.suggestionItem}
+                    onClick={() => handleItemClick(item)} // 클릭 시 선택된 아이템 추가
+                  >
+                    {item.name} ({item.code})
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className={styles.cartContainer}>
@@ -186,17 +212,17 @@ export default function CalcPage() {
               ref={receivedAmountRef}
               step="10000" // 10,000원 단위로 증가
             />
-            {/* 거스름돈이 음수일 경우 빨간색, 그렇지 않으면 기본 색상 */}
-            <p
-              style={{
-                color: calculateChange() < 0 ? 'red' : 'black',
-              }}
-            >
-              Change: {calculateChange()} 원
-            </p>
-            {/* 돈을 더 받아야 하는 경우 문구 표시 */}
-            {calculateChange() < 0 && (
-              <p style={{ color: 'red' }}>돈을 더 받아야 합니다.</p>
+            {/* 받은 금액이 있을 때만 메시지를 표시 */}
+            {receivedAmount > 0 && (
+              <p
+                style={{
+                  color: calculateChange() < 0 ? 'red' : 'black',
+                }}
+              >
+                {calculateChange() < 0
+                  ? `Change: ${calculateChange()} 원 - 돈을 더 받아야 합니다.`
+                  : `Change: ${calculateChange()} 원 - 거스름 돈`}
+              </p>
             )}
           </div>
 
