@@ -31,9 +31,9 @@ export default function Page () {
       setJapitems(JSON.parse(localJapitems))
       setIsLoading(false)
     } else {
-      setIsLoading(false)
+      // 로컬 데이터가 없으면 즉시 리모트에서 데이터를 가져옴
+      getRemoteJapitems()
     }
-    getRemoteJapitems()
   }, [])
 
   useEffect(() => {
@@ -71,7 +71,6 @@ export default function Page () {
   useEffect(() => {
     handleSearch(searchTerm)
   }, [searchTerm, handleSearch])
-  console.log(filteredJapitems)
 
   return (
     <div className={styles.pageContainer}>
