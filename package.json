@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@netlify/plugin-nextjs": "^5.5.1",
+    "@netlify/plugin-nextjs": "^5.7.1",
     "client-only": "^0.0.1",
     "firebase": "^10.12.4",
     "next": "latest",
