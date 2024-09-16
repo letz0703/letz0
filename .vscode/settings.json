@@ -1,3 +1,193 @@
 {
-	"workbench.colorTheme": "GitHub Dark Dimmed"
+  //"github.copilot.inlineSuggest.enable": false,
+  //"github.copilot.inlineSuggest.enable": true,
+  "editor.multiCursorModifier": "alt",
+  "tailwind-fold.autoFold": true,
+  "editor.fontWeight": "400",
+  "workbench.colorTheme": "GitHub Dark Dimmed",
+  "workbench.colorCustomizations": {
+    "tab.activeBackground": "#770b29"
+  },
+  "todo-tree.highlights.defaultHighlight": {
+    "icon": "alert",
+    "type": "text",
+    "foreground": "black",
+    "background": "powderblue",
+    "opacity": 50,
+    "iconColour": "blue"
+  },
+  "todo-tree.highlights.customHighlight": {
+    "TODO": {
+      "icon": "check",
+      "type": "line"
+    },
+    "FIXME": {
+      "foreground": "black",
+      "iconColour": "yellow",
+      "gutterIcon": true
+    }
+  },
+  "editor.tokenColorCustomizations": {
+    "comments": "",
+    "keywords": "#b3b4b7",
+    "variables": "#cca700",
+    "textMateRules": [
+      {
+        "scope": [
+          "variable.other.constant.tsx",
+          "entity.name.function.js",
+          "entity.name.type.alias.tsx",
+          "entity.name.type.alias.tsx",
+          "variable.other.readwrite.tsx"
+        ],
+        "settings": {
+          "foreground": "#efefef",
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "scope": "entity.other.attribute-name.tsx",
+        "settings": {
+          "foreground": "#af9cff"
+        }
+      },
+      {
+        "scope": ["source.tsx"],
+        "settings": {
+          "foreground": "#e8ad40"
+        }
+      },
+      {
+        "scope": ["entity.name.function.js", "entity.name.function.tsx"],
+        "settings": {
+          "foreground": "#87c3ff"
+        }
+      },
+      {
+        "scope": [
+          "variable.object.property.tsx",
+          "variable.other.object.tsx",
+          "variable.other.readwrite.js",
+          "variable.parameter.tsx",
+          "variable.other.readwrite.tsx"
+        ],
+        "settings": {
+          "foreground": "#fba9bc"
+        }
+      },
+      {
+        "scope": "entity.name.tag.js.jsx",
+        "settings": {
+          "foreground": "#70d958"
+        }
+      },
+      {
+        "scope": [
+          "entity.name.function.js.jsx",
+          "entity.name.type.tsx",
+          "entity.name.tag.tsx"
+        ],
+        "settings": {
+          "foreground": "#81baf3",
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "scope": ["storage.type.type.tsx"],
+        "settings": {
+          "foreground": "#82dece",
+          "fontStyle": "italic"
+        }
+      },
+      {
+        "scope": ["variable.other.readwrite.alias.js.jsx"],
+        "settings": {
+          "foreground": "#ae9afd"
+        }
+      },
+      {
+        "scope": ["keyword.control.import.tsx", "keyword.control.from.tsx"],
+        "settings": {
+          "foreground": "#80cfcb"
+        }
+      },
+      {
+        "scope": ["string.quoted.double.tsx", "string.quoted.single.tsx"],
+        "settings": {
+          "foreground": "#e294dc"
+        }
+      },
+      {
+        "scope": ["variable.other.readwrite.alias.tsx"],
+        "settings": {
+          "foreground": "#c5c5c5"
+        }
+      }
+    ]
+  },
+  "todo-tree.tree.showBadges": true,
+  "todo-tree.tree.scanMode": "open files",
+  "[javascript]": {
+    // "editor.autoClosingBrackets": "never"
+  },
+  "editor.acceptSuggestionOnEnter": "smart",
+  "editor.formatOnSave": true,
+  // "editor.autoClosingBrackets": "never"
+  // "editor.autoSurronud": "never"
+  "macros.list": {
+    "commentDown": [
+      "editor.action.copyLinesDownAction",
+      "cursorUp",
+      "editor.action.addCommentLine",
+      "cursorDown"
+    ],
+    "addSemicolon": [
+      "cursorEnd",
+      { "command": "type", "args": { "text": ";" } }
+    ],
+    "classname": [
+      "classname",
+      { "command": "type", "args": { "text": "cn" } },
+      "insertSnippet"
+    ],
+
+    "callbackSnippet": [
+      { "command": "type", "args": { "text": "nj" } },
+      "insertSnippet"
+    ]
+  },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "emmet.showSuggestionsAsSnippets": true,
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "editor.formatOnPaste": false,
+  "bookmarks.useWorkaroundForFormatters": false,
+  "eslint.format.enable": true,
+  "git-blame.gitWebUrl": "https://github.com/letz0703/0909/commit/$ID",
+
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.inlineSuggest.suppressSuggestions": true,
+  "editor.snippetSuggestions": "inline",
+  "editor.suggest.snippetsPreventQuickSuggestions": true,
+  "editor.suggest.showSnippets": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.inlineSuggest.showToolbar": "onHover",
+  "emmet.useInlineCompletions": false,
+  "editor.tabCompletion": "onlySnippets",
+  "editor.lineNumbers": "on",
+  "emmet.triggerExpansionOnTab": true,
+  "prettier.semi": true,
+  "zenMode.hideLineNumbers": true,
+  "accessibility.signals.lineHasInlineSuggestion": {
+    "sound": "off"
+  },
+  "prettier.documentSelectors": [
+    "**/*.{ts, js}"
+  ]
+  // "github.copilot.advanced": {
+
+  // }
 }
