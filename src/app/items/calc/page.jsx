@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import styles from './calc.module.css'
 
 export default function CalcPage() {
@@ -85,10 +85,8 @@ export default function CalcPage() {
   };
 
   return (
+    <Suspense fallback={"loading..."}>
     <div className={styles.pageContainer}>
-      {isLoading ? (
-        <h2>Loading...</h2>
-      ) : (
         <div>
           <div className={styles.searchContainer}>
             <input
@@ -154,7 +152,6 @@ export default function CalcPage() {
             <h2>Total Price: {calculateTotalPrice()} 원</h2>
           </div>
         </div>
-      )}
     </div>
   );
 }
