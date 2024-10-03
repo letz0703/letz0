@@ -5,14 +5,18 @@ import { database } from '@/api/firebase'
 import { get, ref } from 'firebase/database'
 import styles from './page.module.css' // CSS 파일을 임포트
 import Link from 'next/link'
+import {usePathname, useRouter} from "next/navigation"
 
 export default function Page () {
+  const router = useRouter()
+  const pathname= usePathname()
+
   const [isLoading, setIsLoading] = useState(true)
   const [japitems, setJapitems] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredJapitems, setFilteredJapitems] = useState([])
   const searchInputRef = useRef(null) // 검색 입력창의 ref
- 
+
 
   async function getRemoteJapitems () {
     await get(ref(database, 'japitems'))
@@ -54,6 +58,7 @@ export default function Page () {
 
   const handleSearch = useCallback(
     debounce(searchTerm => {
+      const params= new URLSearchParams()
       setFilteredJapitems(
         japitems.filter(item => {
           const term = searchTerm.toLowerCase()
@@ -65,6 +70,7 @@ export default function Page () {
           )
         })
       )
+      router.push(`${pathname}?${params.toString()}`)
     }, 300),
     [japitems]
   )
@@ -100,7 +106,8 @@ export default function Page () {
           </div>
           <div className={styles.gridContainer}>
             {filteredJapitems.map((item, index) => (
-              <div key={index} className={styles.itemCard}>
+              <div key={`${index}-${searchTerm}`} className={styles.itemCard}>
+              {/*<div key={index} className={styles.itemCard}>*/}
                 <Link
                   href={{
                     pathname: `/items/${item.id}`
