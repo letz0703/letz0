@@ -12,6 +12,7 @@ export default function Page () {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredJapitems, setFilteredJapitems] = useState([])
   const searchInputRef = useRef(null) // 검색 입력창의 ref
+ 
 
   async function getRemoteJapitems () {
     await get(ref(database, 'japitems'))
