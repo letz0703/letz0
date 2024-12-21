@@ -1,6 +1,8 @@
 // app/shop/layout.jsx
 import React from 'react';
 
+
+
 const Layout = ({ children }) => {
   return (
     <div>

@@ -12,8 +12,7 @@ export default function ItemDetail ({ params }) {
     if (!localJapitemsString) {
       console.log('No items found in local storage.')
       return
-    }
-    let localJapitems
+    } let localJapitems
     try {
       localJapitems = JSON.parse(localJapitemsString)
     } catch (error) {

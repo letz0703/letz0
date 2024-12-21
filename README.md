@@ -1,3 +1,7 @@
+#font
+https://courses.webdevsimplified.com/view/courses/react-simplified-next-js/2416325-shared-features/7707257-44-fonts
+
+
 text 폴더 삭제함
 2024.09.13 금
 page.module.css : Page.module.css fix again

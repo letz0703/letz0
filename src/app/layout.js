@@ -1,11 +1,9 @@
-import {Inter} from "next/font/google";
+import {inter} from "./font";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata = {
-  title: "i.etz",
-  description: "make it simple",
+  title: "letz - best buy",
+  description: "price info - CANMART, south KOREA",
 };
 
 export default function RootLayout({ children }) {
