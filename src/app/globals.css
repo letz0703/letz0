@@ -9,8 +9,8 @@
     background-image: url("/main.jpg");
     margin: 0;
     padding: 0;
-    width: 100vw; /* 뷰포트 전체 너비 */
-    height: 100vh; /* 뷰포트 전체 높이 */
+    width: 100vw;
+    height: 100vh;
   }
 }
 
@@ -37,63 +37,34 @@ html, body {
 }
 
 .container {
-  position: relative;
-  height: 100vh;
-  width: 100vw; /* 뷰포트 전체 너비 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f0f9;
+  @apply relative flex flex-col justify-center items-center h-screen w-screen bg-gray-100;
+}
+
+.title {
+  @apply text-2xl font-bold text-gray-800 mb-4; /* Tailwind 스타일 추가 */
 }
 
 .backgroundDesktop2,
 .backgroundMobile {
-  position: absolute;
-  width: 100vw; /* 뷰포트 전체 너비 */
-  height: 100vh; /* 뷰포트 전체 높이 */
-  top: 0;
-  left: 0;
-  z-index: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  @apply absolute w-full h-full top-0 left-0 z-0 bg-cover bg-center bg-no-repeat;
 }
 
 .linkContainer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
+  @apply relative z-10;
 }
 
 .linkButton {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 10px 0;
-  font-size: 16px;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.linkButton:hover {
-  background-color: #0056b3;
+  @apply inline-block px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-700 transition-colors duration-300;
 }
 
 /* 모바일 환경 */
 @media (max-width: 1023px) {
   .backgroundMobile {
-    display: block;
+    @apply block;
     background-image: url("/letzcell.jpg");
   }
 
   .backgroundDesktop2 {
-    display: none;
+    @apply hidden;
   }
 }
