@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { database } from "@/api/firebase";
+import { database } from "../../api/firebase";
 import { get, ref } from "firebase/database";
 import styles from './page.module.css'; // CSS 파일을 임포트
 
