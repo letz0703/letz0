@@ -1,3 +1,6 @@
+# FIX
+(typeof item.barcode === "number" && item.barcode.toString().includes(term)) 2024.12.28 토 barcode fix
+ 2024.12.28 토
 #font
 https://courses.webdevsimplified.com/view/courses/react-simplified-next-js/2416325-shared-features/7707257-44-fonts
 
