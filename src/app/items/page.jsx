@@ -1,88 +1,118 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { database } from "../../api/firebase"
+import { database } from '../../api/firebase'
 import { get, ref } from 'firebase/database'
 import styles from './page.module.css'
-import Link from 'next/link'
-import { usePathname, useRouter } from "next/navigation"
-import Image from "next/image"
+import Image from 'next/image'
 
 // debounce를 안정적인 함수로 정의
 function useDebounce(callback, delay) {
-  const debounceRef = useRef(null);
+  const debounceRef = useRef(null)
 
-  return useCallback((...args) => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    debounceRef.current = setTimeout(() => {
-      callback(...args);
-    }, delay);
-  }, [callback, delay]);
+  return useCallback(
+    (...args) => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+      }
+      debounceRef.current = setTimeout(() => {
+        callback(...args)
+      }, delay)
+    },
+    [callback, delay]
+  )
 }
 
 export default function Page() {
-  const router = useRouter();
-  const pathname = usePathname();
+  const [isLoading, setIsLoading] = useState(true)
+  const [japitems, setJapitems] = useState([]) // 전체 데이터
+  const [searchTerm, setSearchTerm] = useState('') // 검색어
+  const [filteredJapitems, setFilteredJapitems] = useState([]) // 필터링된 데이터
+  const searchInputRef = useRef(null) // 검색 입력창 ref
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [japitems, setJapitems] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredJapitems, setFilteredJapitems] = useState([]);
-  const searchInputRef = useRef(null);
-
+  // Firebase에서 데이터 가져오기
   async function getRemoteJapitems() {
-    await get(ref(database, 'japitems'))
-      .then(snapshot => {
-        if (snapshot.exists()) {
-          const remoteJapitems = Object.values(snapshot.val());
-          setJapitems(remoteJapitems);
-          localStorage.setItem('japitems', JSON.stringify(remoteJapitems));
-        }
-      })
-      .finally(() => setIsLoading(false));
+    try {
+      setIsLoading(true)
+      const snapshot = await get(ref(database, 'japitems'))
+      if (snapshot.exists()) {
+        const remoteJapitems = Object.values(snapshot.val())
+        setJapitems(remoteJapitems)
+        setFilteredJapitems(remoteJapitems) // 초기 상태 설정
+        localStorage.setItem('japitems', JSON.stringify(remoteJapitems))
+      } else {
+        console.warn('No data found in Firebase.')
+        setJapitems([])
+        setFilteredJapitems([])
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
+  // 초기 데이터 로드
   useEffect(() => {
-    const localJapitems = localStorage.getItem('japitems');
+    const localJapitems = localStorage.getItem('japitems')
     if (localJapitems) {
-      setJapitems(JSON.parse(localJapitems));
-      setIsLoading(false);
+      const items = JSON.parse(localJapitems)
+      setJapitems(items)
+      setFilteredJapitems(items)
+      setIsLoading(false)
     } else {
-      getRemoteJapitems();
+      getRemoteJapitems()
     }
-  }, []);
+  }, [])
 
+  // 검색 로직
+  const handleSearch = useDebounce((term) => {
+    const lowerTerm = term.toLowerCase().trim()
+    if (!lowerTerm) {
+      setFilteredJapitems(japitems) // 검색어 없을 시 전체 데이터 표시
+      return
+    }
+
+    const filtered = japitems.filter((item) => {
+      return (
+        (typeof item.name === 'string' && item.name.toLowerCase().includes(lowerTerm)) ||
+        (typeof item.description === 'string' && item.description.toLowerCase().includes(lowerTerm)) ||
+        (typeof item.enName === 'string' && item.enName.toLowerCase().includes(lowerTerm)) ||
+        (typeof item.price === 'number' && item.price.toString().includes(lowerTerm)) ||
+        (typeof item.barcode === 'string' && item.barcode.includes(lowerTerm))
+      )
+    })
+
+    setFilteredJapitems(filtered)
+  }, 300)
+
+  // 검색어 변경 시 필터링 실행
+  useEffect(() => {
+    handleSearch(searchTerm)
+  }, [searchTerm, japitems]) // japitems가 업데이트될 때도 필터링 실행
+
+  // URL에서 검색어 가져오기
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const searchParam = params.get('search') || ''
+    setSearchTerm(searchParam) // 검색어 상태 업데이트
+  }, [])
+
+  // 페이지 로드 시 검색 입력창에 focus
   useEffect(() => {
     if (searchInputRef.current) {
-      searchInputRef.current.focus();
+      searchInputRef.current.focus()
     }
-  }, []);
+  }, [])
 
-  // debounce를 적용한 handleSearch 정의
-  const handleSearch = useDebounce((searchTerm) => {
-    const term = searchTerm.toLowerCase();
-    const filtered = japitems.filter(item => {
-      return (
-        (typeof item.name === "string" && item.name.toLowerCase().includes(term)) ||
-        (typeof item.description === "string" && item.description.toLowerCase().includes(term)) ||
-        (typeof item.enName === "string" && item.enName.toLowerCase().includes(term)) ||
-        (typeof item.price === "number" && item.price.toString().includes(term)) ||
-        (typeof item.barcode === "number" && item.barcode.toString().includes(term))
-      );
-
-    });
-    setFilteredJapitems(filtered);
-
-    // Update URL with search parameters
-    const params = new URLSearchParams({ search: searchTerm });
-    router.push(`${pathname}?${params.toString()}`, undefined, { shallow: true });
-  }, 300);
-
-  useEffect(() => {
-    handleSearch(searchTerm);
-  }, [searchTerm, handleSearch]);
+  // 검색 결과 리셋
+  const resetSearch = () => {
+    setSearchTerm('') // 검색어 초기화
+    setFilteredJapitems(japitems) // 전체 데이터 표시
+    if (searchInputRef.current) {
+      searchInputRef.current.focus() // 검색 입력창에 포커스
+    }
+  }
 
   return (
     <div className={styles.pageContainer}>
@@ -90,7 +120,7 @@ export default function Page() {
         <h2>Loading...</h2>
       ) : (
         <div>
-          <div className={`${styles.searchContainer} mt-10 mb-10`}>
+          <div className={`${styles.searchContainer} mt-10 mb-10 relative`}>
             <span className={styles.searchIcon}>
               <Image
                 src='/images/search-48.png'
@@ -101,41 +131,47 @@ export default function Page() {
                 className={styles.searchIconImage}
               />
             </span>
-            <input
-              type='text'
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              className={`${styles.searchInput} mt-10 mb-10 pl-10`}
-              ref={searchInputRef}
-            />
+            <div className="relative w-full">
+              <input
+                type='text'
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={`${styles.searchInput} mt-10 mb-10 pl-10 pr-12`} // 오른쪽 여백 추가
+                ref={searchInputRef} // ref 연결
+              />
+              <button
+                onClick={resetSearch}
+                className="absolute top-1/2 right-6 transform -translate-y-1/2 bg-red-600 rounded-full px-3 py-5 text-sm text-white"
+              >
+               reset
+              </button>
+            </div>
           </div>
           <div className={styles.gridContainer}>
             {filteredJapitems.map((item, index) => (
-              <div key={`${index}-${searchTerm}`} className={styles.itemCard}>
-                <Link
-                  href={{
-                    pathname: `/items/${item.id}`
-                  }}
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                >
-                  <Image
-                    src={`/images/${item.imgs || 'default.jpg'}`}
-                    alt={item.name}
-                    className={styles.itemImage}
-                    width={500}
-                    height={500}
-                  />
-                  <p>{item.barcode}</p>
-                  <p>{item.name}</p>
-                  <p>{item.price}</p>
-                  <p>{item.enName}</p>
-                  <p>{item.description}</p>
-                </Link>
+              <div
+                key={`${index}-${searchTerm}`}
+                className={styles.itemCard}
+                onClick={() => window.open(`/items/${item.id}`, '_blank')} // 새 탭 또는 창에서 열림
+                style={{ cursor: 'pointer' }} // 클릭 가능하게 스타일 추가
+              >
+                <Image
+                  src={`/images/${item.imgs || 'default.jpg'}`}
+                  alt={item.name}
+                  className={styles.itemImage}
+                  width={500}
+                  height={500}
+                />
+                <p>{item.barcode}</p>
+                <p>{item.name}</p>
+                <p>{item.price}</p>
+                <p>{item.enName}</p>
+                <p>{item.description}</p>
               </div>
             ))}
           </div>
         </div>
       )}
     </div>
-  );
+  )
 }

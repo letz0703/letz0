@@ -2,7 +2,7 @@ import {inter} from "./font";
 import "./globals.css";
 
 export const metadata = {
-  title: "letz - best buy",
+  title: "Make It Simple - letz",
   description: "price info - CANMART, south KOREA",
 };
 
