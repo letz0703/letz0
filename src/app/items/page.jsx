@@ -6,6 +6,7 @@ import { get, ref } from 'firebase/database'
 import styles from './page.module.css' // CSS 파일을 임포트
 import Link from 'next/link'
 import {usePathname, useRouter} from "next/navigation"
+import Image from "next/image"
 
 export default function Page () {
   const router = useRouter()
@@ -89,9 +90,12 @@ export default function Page () {
             {' '}
             {/* Tailwind CSS로 상하 마진 추가 */}
             <span className={styles.searchIcon}>
-              <img
+              <Image
                 src='/images/search-48.png'
                 alt='Search Icon'
+                width={30}
+                height={30}
+                priority
                 className={styles.searchIconImage}
               />
             </span>
@@ -117,10 +121,11 @@ export default function Page () {
                   //target="_blank" rel="noopener noreferrer"
                   style={{ textDecoration: 'none', color: 'inherit' }}
                 >
-                  <img
+                  <Image
                     src={`/images/${item.imgs}`}
                     alt={item.name}
                     className={styles.itemImage}
+                    width={500} height={500}
                   />
                   <p>{item.name}</p>
                   <p>{item.price}</p>
