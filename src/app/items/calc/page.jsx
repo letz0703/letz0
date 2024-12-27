@@ -35,6 +35,12 @@ export default function CalcPage() {
       return;
     }
 
+    // 정확히 바코드와 일치하는 항목 찾기
+  const exactMatch = japitems.find(item => item.code === inputValue);
+  if (exactMatch) {
+    setFilteredItems([exactMatch]); // 정확히 일치하는 항목만 표시
+    return;
+  }
     const matchedItems = japitems.filter(item =>
       item.code.toString().includes(inputValue)
     );
