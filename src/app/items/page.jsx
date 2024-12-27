@@ -3,82 +3,86 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { database } from "../../api/firebase"
 import { get, ref } from 'firebase/database'
-import styles from './page.module.css' // CSS 파일을 임포트
+import styles from './page.module.css'
 import Link from 'next/link'
-import {usePathname, useRouter} from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import Image from "next/image"
 
-export default function Page () {
-  const router = useRouter()
-  const pathname= usePathname()
+// debounce를 안정적인 함수로 정의
+function useDebounce(callback, delay) {
+  const debounceRef = useRef(null);
 
-  const [isLoading, setIsLoading] = useState(true)
-  const [japitems, setJapitems] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filteredJapitems, setFilteredJapitems] = useState([])
-  const searchInputRef = useRef(null) // 검색 입력창의 ref
+  return useCallback((...args) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+    debounceRef.current = setTimeout(() => {
+      callback(...args);
+    }, delay);
+  }, [callback, delay]);
+}
 
+export default function Page() {
+  const router = useRouter();
+  const pathname = usePathname();
 
-  async function getRemoteJapitems () {
+  const [isLoading, setIsLoading] = useState(true);
+  const [japitems, setJapitems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredJapitems, setFilteredJapitems] = useState([]);
+  const searchInputRef = useRef(null);
+
+  async function getRemoteJapitems() {
     await get(ref(database, 'japitems'))
       .then(snapshot => {
         if (snapshot.exists()) {
-          const remoteJapitems = Object.values(snapshot.val())
-          setJapitems(remoteJapitems)
-          localStorage.setItem('japitems', JSON.stringify(remoteJapitems))
+          const remoteJapitems = Object.values(snapshot.val());
+          setJapitems(remoteJapitems);
+          localStorage.setItem('japitems', JSON.stringify(remoteJapitems));
         }
       })
-      .finally(() => setIsLoading(false))
+      .finally(() => setIsLoading(false));
   }
 
   useEffect(() => {
-    const localJapitems = localStorage.getItem('japitems')
+    const localJapitems = localStorage.getItem('japitems');
     if (localJapitems) {
-      setJapitems(JSON.parse(localJapitems))
-      setIsLoading(false)
+      setJapitems(JSON.parse(localJapitems));
+      setIsLoading(false);
     } else {
-      // 로컬 데이터가 없으면 즉시 리모트에서 데이터를 가져옴
-      getRemoteJapitems()
+      getRemoteJapitems();
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (searchInputRef.current) {
-      searchInputRef.current.focus() // 페이지 로딩 시 검색 입력창에 포커스
+      searchInputRef.current.focus();
     }
-  }, [])
+  }, []);
 
-  const debounce = (func, delay) => {
-    let debounceTimer
-    return function (...args) {
-      const context = this
-      clearTimeout(debounceTimer)
-      debounceTimer = setTimeout(() => func.apply(context, args), delay)
-    }
-  }
+  // debounce를 적용한 handleSearch 정의
+  const handleSearch = useDebounce((searchTerm) => {
+    const term = searchTerm.toLowerCase();
+    const filtered = japitems.filter(item => {
+      return (
+        (typeof item.name === "string" && item.name.toLowerCase().includes(term)) ||
+        (typeof item.description === "string" && item.description.toLowerCase().includes(term)) ||
+        (typeof item.enName === "string" && item.enName.toLowerCase().includes(term)) ||
+        (typeof item.price === "number" && item.price.toString().includes(term)) ||
+        (typeof item.barcode === "string" && item.barcode.toString().includes(term))
+      );
 
-  const handleSearch = useCallback(
-    debounce(searchTerm => {
-      const params= new URLSearchParams()
-      setFilteredJapitems(
-        japitems.filter(item => {
-          const term = searchTerm.toLowerCase()
-          return (
-            item.name.toLowerCase().includes(term) ||
-            item.description.toLowerCase().includes(term) ||
-            item.enName.toLowerCase().includes(term) ||
-            item.price.toString().includes(term)
-          )
-        })
-      )
-      router.push(`${pathname}?${params.toString()}`)
-    }, 300),
-    [japitems]
-  )
+    });
+    setFilteredJapitems(filtered);
+
+    // Update URL with search parameters
+    const params = new URLSearchParams({ search: searchTerm });
+    router.push(`${pathname}?${params.toString()}`, undefined, { shallow: true });
+  }, 300);
 
   useEffect(() => {
-    handleSearch(searchTerm)
-  }, [searchTerm, handleSearch])
+    handleSearch(searchTerm);
+  }, [searchTerm, handleSearch]);
 
   return (
     <div className={styles.pageContainer}>
@@ -87,8 +91,6 @@ export default function Page () {
       ) : (
         <div>
           <div className={`${styles.searchContainer} mt-10 mb-10`}>
-            {' '}
-            {/* Tailwind CSS로 상하 마진 추가 */}
             <span className={styles.searchIcon}>
               <Image
                 src='/images/search-48.png'
@@ -101,32 +103,29 @@ export default function Page () {
             </span>
             <input
               type='text'
-              //placeholder='Delivery 3500KRW + Fee 1000KRW for 3 items'
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className={`${styles.searchInput} mt-10 mb-10 pl-10`} // Tailwind CSS로 상하 마진 추가 및 좌측 패딩 추가
-              ref={searchInputRef} // ref 연결
+              className={`${styles.searchInput} mt-10 mb-10 pl-10`}
+              ref={searchInputRef}
             />
           </div>
           <div className={styles.gridContainer}>
             {filteredJapitems.map((item, index) => (
               <div key={`${index}-${searchTerm}`} className={styles.itemCard}>
-              {/*<div key={index} className={styles.itemCard}>*/}
                 <Link
                   href={{
                     pathname: `/items/${item.id}`
-                    //query: { itemId:item.id, name: item.name, price:item.price, enName:item.enName, description:item.description}
                   }}
-                  //href={item.homeUrl}
-                  //target="_blank" rel="noopener noreferrer"
                   style={{ textDecoration: 'none', color: 'inherit' }}
                 >
                   <Image
-                    src={`/images/${item.imgs}`}
+                    src={`/images/${item.imgs || 'default.jpg'}`}
                     alt={item.name}
                     className={styles.itemImage}
-                    width={500} height={500}
+                    width={500}
+                    height={500}
                   />
+                  <p>{item.barcode}</p>
                   <p>{item.name}</p>
                   <p>{item.price}</p>
                   <p>{item.enName}</p>
@@ -138,5 +137,5 @@ export default function Page () {
         </div>
       )}
     </div>
-  )
+  );
 }
