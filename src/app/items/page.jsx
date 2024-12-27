@@ -69,7 +69,7 @@ export default function Page() {
         (typeof item.description === "string" && item.description.toLowerCase().includes(term)) ||
         (typeof item.enName === "string" && item.enName.toLowerCase().includes(term)) ||
         (typeof item.price === "number" && item.price.toString().includes(term)) ||
-        (typeof item.barcode === "string" && item.barcode.toString().includes(term))
+        (typeof item.barcode === "number" && item.barcode.toString().includes(term))
       );
 
     });
