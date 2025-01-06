@@ -66,34 +66,41 @@ export default function Page() {
   }, []);
 
   // 검색 로직
-  const handleSearch = useDebounce((term) => {
-    const lowerTerm = term.toLowerCase().trim();
-    if (!lowerTerm) {
-      setFilteredJapitems(japitems); // 검색어 없을 시 전체 데이터 표시
-      return;
-    }
+  const handleSearch = useDebounce(
+    useCallback(
+      (term) => {
+        const lowerTerm = term.toLowerCase().trim();
+        if (!lowerTerm) {
+          setFilteredJapitems(japitems);
+          return;
+        }
 
-    const filtered = japitems.filter((item) => {
-      return (
-        (typeof item.name === 'string' &&
-          item.name.toLowerCase().includes(lowerTerm)) ||
-        (typeof item.description === 'string' &&
-          item.description.toLowerCase().includes(lowerTerm)) ||
-        (typeof item.enName === 'string' &&
-          item.enName.toLowerCase().includes(lowerTerm)) ||
-        (typeof item.price === 'number' &&
-          item.price.toString().includes(lowerTerm)) ||
-        (item.barcode && item.barcode.toString().includes(lowerTerm)) // 문자열 변환 후 비교
-      );
-    });
+        const filtered = japitems.filter((item) => {
+          return (
+            (typeof item.name === 'string' &&
+              item.name.toLowerCase().includes(lowerTerm)) ||
+            (typeof item.description === 'string' &&
+              item.description.toLowerCase().includes(lowerTerm)) ||
+            (typeof item.enName === 'string' &&
+              item.enName.toLowerCase().includes(lowerTerm)) ||
+            (typeof item.price === 'number' &&
+              item.price.toString().includes(lowerTerm)) ||
+            (item.barcode && item.barcode.toString().includes(lowerTerm))
+          );
+        });
 
-    setFilteredJapitems(filtered);
-  }, 300);
+        setFilteredJapitems(filtered);
+      },
+      [japitems] // japitems에만 의존
+    ),
+    300
+  );
+
 
   // 검색어 변경 시 필터링 실행
   useEffect(() => {
     handleSearch(searchTerm);
-  }, [searchTerm, japitems, handleSearch]); // japitems가 업데이트될 때도 필터링 실행
+  }, [searchTerm, japitems]); // japitems가 업데이트될 때도 필터링 실행
 
   // URL에서 검색어 가져오기
   useEffect(() => {
