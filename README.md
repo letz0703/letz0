@@ -1,3 +1,11 @@
+2025.02.01 토
+-WDS
+-DAVINCI
+-IC - Design
+	- JAP CM
+	- JAP SONG
+	- Liquor 3
+
 # FIX
 (typeof item.barcode === "number" && item.barcode.toString().includes(term)) 2024.12.28 토 barcode fix
  2024.12.28 토
