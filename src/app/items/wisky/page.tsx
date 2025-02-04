@@ -3,7 +3,7 @@ import "./style.css"; // 이미지 스타일 불러오기
 import Link from "next/link"
 
 export default function Page() {
-  const imageNames = ["ballan.jpg", "japanwisky.jpg"]
+  const imageNames = ["ballan.jpg", "sake.jpg"]
   return (
     <div className="divOverlay"
     >
