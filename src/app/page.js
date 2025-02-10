@@ -6,7 +6,7 @@ export default function Home() {
     <div className="container">
       {/*<div className={inter.className}>부산 깡통시장 가격정보</div>*/}
       <div className={gowoon.className} style={{fontSize:"2em"}}>부산 깡통시장 가격정보</div>
-      <div className={inter.className} style={{fontSize:"1.4em", color:"gray"}}>price info - CANMART, KOREA</div>
+      <div className={inter.className} style={{fontSize:"1.4em", color:"gray"}}>🏷️ price info - CANMART, KOREA</div>
       <br/>
       <div className="linkContainer">
         <a
@@ -14,19 +14,33 @@ export default function Home() {
           className="linkButton"
           rel="noopener noreferrer"
           target="_blank"
-        > 🥃 Wisky
+        > 🥃 위스키 가격문의 : 051.246.0909
         </a>
         {/*<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="rainskiss" data-description="Support me on Buy me a coffee!" data-message="" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>*/}
       </div>
-      <div className="linkContainer">
+      <div className="linkContainer pt-2">
         <a
           href="/items"
           className="linkButton"
           rel="noopener noreferrer"
           target="_blank"
-        >🔎 PRICE INFO
+        >🔎 수입제품 가격검색
         </a>
         {/*<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="rainskiss" data-description="Support me on Buy me a coffee!" data-message="" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>*/}
+      </div>
+      <div className="linkContainer pt-2">
+        <a
+          href="https://www.youtube.com/playlist?list=PLxJmwr-75ybaA0OypwGjCQSLKbyXHK5zg"
+          className="linkButton"
+          rel="noopener noreferrer"
+          target="_blank"
+          style={{"background-color":"#c10002"}}
+        >youtube
+        </a>
+        {/*<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="rainskiss" data-description="Support me on Buy me a coffee!" data-message="" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>*/}
+      </div>
+      <div>
+        icanmart@gmail.com
       </div>
     </div>
   );
