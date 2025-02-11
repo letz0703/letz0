@@ -39,6 +39,10 @@ export default function Home() {
         </a>
         {/*<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="rainskiss" data-description="Support me on Buy me a coffee!" data-message="" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>*/}
       </div>
+      <div>조니워커 블루 2025 뱀띠 : 44만원</div>
+      <div>블루망디(금색) : 54만원 </div>
+      <div className="bg-red-700 px-2 text-white
+      ">25년2월10일현재가</div><div>가격변경이 있을 수 있으므로 주문시 가격 재문의 바랍니다</div>
       <div>
         icanmart@gmail.com
       </div>
