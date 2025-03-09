@@ -4,13 +4,13 @@ import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function ItemDetail() {
-  const { itemId } = useParams() // URL에서 itemId를 가져옵니다.
+  const { itemId } = useParams() // URL에서 itemId를 가져옴
   const router = useRouter() // 리다이렉션 제어를 위해 사용
   const [item, setItem] = useState(null)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    // 로컬 스토리지에서 데이터를 가져옵니다.
+    // 로컬 스토리지에서 데이터를 가져옴
     const localJapitemsString = localStorage.getItem('japitems')
     if (!localJapitemsString) {
       console.log('No items found in local storage.')
@@ -27,7 +27,7 @@ export default function ItemDetail() {
       return
     }
 
-    // itemId와 일치하는 데이터를 찾습니다 (문자열 비교)
+    // itemId와 일치하는 데이터를 찾음 (문자열 비교)
     const foundItem = localJapitems.find(item => String(item.id) === String(itemId))
 
     if (foundItem) {
@@ -38,12 +38,11 @@ export default function ItemDetail() {
     }
   }, [itemId])
 
-  // 에러가 발생했을 때 처리
+  // 에러 발생 시 처리
   useEffect(() => {
     if (error) {
       console.log('Error detected:', error)
-      // 필요에 따라 리다이렉션 처리 (예: 홈으로 이동)
-      router.push('/')
+      router.push('/') // 홈으로 리다이렉트
     }
   }, [error, router])
 
@@ -56,14 +55,33 @@ export default function ItemDetail() {
   }
 
   return (
-    <div>
-      <h1>Item Details</h1>
-      <h2>Item ID: {item.id}</h2>
+    <div
+      style={{
+        width: '100%',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'black',
+        textShadow: 'none',
+        padding: '20px',
+      }}
+    >
+      <h1 className="font-bold text-2xl"></h1>
+      {/*<h2>Item ID: {item.id}</h2>*/}
       <p><strong>Name:</strong> {item.name}</p>
       <p><strong>Price:</strong> {item.price} KRW</p>
       <p><strong>English Name:</strong> {item.enName}</p>
       <p><strong>Description:</strong> {item.description}</p>
-      <p><strong>Barcode:</strong> {item.barcode}</p>
+      {/*<p><strong>Barcode:</strong> {item.barcode}</p>*/}
+      {item.imgs && (
+        <img
+          src={`/images/${item.imgs}`}
+          alt={item.name}
+          style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }}
+        />
+      )}
       {item.comment && (
         <p>
           <strong>Comment:</strong>{' '}
