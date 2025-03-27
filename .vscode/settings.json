@@ -1,6 +1,6 @@
 {
-  //"github.copilot.inlineSuggest.enable": false,
-  //"github.copilot.inlineSuggest.enable": true,
+  // "github.copilot.inlineSuggest.enable": false,
+  // "github.copilot.inlineSuggest.enable": true,
   "editor.multiCursorModifier": "alt",
   "tailwind-fold.autoFold": true,
   "editor.fontWeight": "400",
@@ -128,12 +128,13 @@
   "todo-tree.tree.showBadges": true,
   "todo-tree.tree.scanMode": "open files",
   "[javascript]": {
-    // "editor.autoClosingBrackets": "never"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "editor.formatOnSaveMode": "file",
   "editor.acceptSuggestionOnEnter": "smart",
   "editor.formatOnSave": true,
-  // "editor.autoClosingBrackets": "never"
-  // "editor.autoSurronud": "never"
+  // "editor.autoClosingBrackets": "never",
+  // "editor.autoSurronud": "never",
   "macros.list": {
     "commentDown": [
       "editor.action.copyLinesDownAction",
@@ -141,34 +142,35 @@
       "editor.action.addCommentLine",
       "cursorDown"
     ],
-    "addSemicolon": [
-      "cursorEnd",
-      { "command": "type", "args": { "text": ";" } }
-    ],
+    "addSemicolon": ["cursorEnd", {"command": "type", "args": {"text": ";"}}],
     "classname": [
       "classname",
-      { "command": "type", "args": { "text": "cn" } },
+      {"command": "type", "args": {"text": "cn"}},
       "insertSnippet"
     ],
-
     "callbackSnippet": [
-      { "command": "type", "args": { "text": "nj" } },
+      {"command": "type", "args": {"text": "nj"}},
       "insertSnippet"
     ]
   },
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "emmet.showSuggestionsAsSnippets": true,
   "[javascriptreact]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "editor.formatOnPaste": false,
-  "bookmarks.useWorkaroundForFormatters": false,
-  "eslint.format.enable": true,
-  "git-blame.gitWebUrl": "https://github.com/letz0703/0909/commit/$ID",
-
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "editor.formatOnPaste": false,
+  "bookmarks.useWorkaroundForFormatters": false,
+  "eslint.format.enable": false,
+  "git-blame.gitWebUrl": "https://github.com/letz0703/0909/commit/$ID",
   "editor.inlineSuggest.suppressSuggestions": true,
   "editor.snippetSuggestions": "inline",
   "editor.suggest.snippetsPreventQuickSuggestions": true,
@@ -184,10 +186,7 @@
   "accessibility.signals.lineHasInlineSuggestion": {
     "sound": "off"
   },
-  "prettier.documentSelectors": [
-    "**/*.{ts, js}"
-  ]
+  "prettier.documentSelectors": ["**/*.{js,jsx,ts,tsx,json,html,css}"]
   // "github.copilot.advanced": {
-
   // }
 }
