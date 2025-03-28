@@ -9,18 +9,18 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Make It Simple - letz",
-  description: "price info - CANMART, south KOREA"
+  title: "letz Shop Together",
+  description: "Directly From Japan"
 };
 
 export default function RootLayout({children}) {
   return (
     <html lang="ko">
       <body
-        className={
-          (cn("bg-background min-h-screen font-sans antialiased"),
-          inter.variable)
-        }
+        className={cn(
+          "bg-black min-h-screen font-sans antialiased",
+          inter.variable
+        )}
       >
         {children}
       </body>
