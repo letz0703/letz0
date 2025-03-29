@@ -164,3 +164,7 @@ body {
     @apply bg-background text-foreground;
   }*/
 }
+
+.menu-container {
+  overflow: visiable;
+}
