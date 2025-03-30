@@ -4,21 +4,15 @@ import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {ComponentProps, ReactNode} from "react";
 
-type NavProps = {
-  children: ReactNode;
-};
-
-type NavLinkProps = {
-  href: string;
-  children: ReactNode;
-};
-
-export function Nav({children}: NavProps) {
-  return <nav>{children}</nav>;
+export function Nav({children}: {children: ReactNode}) {
+  return (
+    <nav className="bg-primary text-primary-foreground flex justify-center px-4">
+      {children}
+    </nav>
+  );
 }
 
 export function NavLink(props: Omit<ComponentProps<typeof Link>, "className">) {
-  //export function NavLink({href, children}: NavLinkProps) {
   const pathname = usePathname();
   return (
     <Link

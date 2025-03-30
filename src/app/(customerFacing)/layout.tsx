@@ -1,8 +1,7 @@
 import {cn} from "@/lib/utils";
 import {Inter} from "next/font/google";
 import "./globals.css";
-import {Nav, NavLink} from "./components/Nav";
-
+import {Nav, NavLink} from "../components/Nav";
 const inter = Inter({subsets: ["latin"], variable: "--font-sans"});
 
 export const metadata = {
