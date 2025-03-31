@@ -1,5 +1,12 @@
 import {getApps, initializeApp} from "firebase/app";
-import {getAuth, GoogleAuthProvider} from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChange,
+  User
+} from "firebase/auth";
 import {get, getDatabase, ref} from "firebase/database";
 import {getFirestore} from "firebase/firestore";
 
@@ -37,6 +44,32 @@ export const db = getFirestore(app);
 //  }
 //};
 
+function wait(duration) {
+  return new Promise(resolve => {
+    setTimeout(resolve, duration);
+  });
+}
+
+export async function login() {
+  return signInWithPopup(auth, provider)
+    .then(result => {
+      const user = result.user;
+      console.log(user);
+      return user;
+    })
+    .catch(console.error);
+}
+
+export async function logout() {
+  return signOut(auth).then(() => null);
+}
+
+export function onUserStateChange(callback: (user: User | null) => void) {
+  onAuthStateChanged(auth, user => {
+    callback(user ?? null);
+  });
+}
+
 export default async function getJapitemsFromFirebase() {
   //wait(2000)
   try {
@@ -52,10 +85,3 @@ export default async function getJapitemsFromFirebase() {
     return []; // 에러 발생 시 빈 배열 반환
   }
 }
-
-function wait(duration) {
-  return new Promise(resolve => {
-    setTimeout(resolve, duration);
-  });
-}
-

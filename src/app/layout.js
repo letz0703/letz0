@@ -7,6 +7,9 @@ import {TbPencilCheck} from "react-icons/tb";
 const inter = Inter({subsets: ["latin"], variable: "--font-sans"});
 import {SessionProvider} from "next-auth/react";
 import {Providers} from "./providers";
+import {login} from "../api/firebase";
+import LoginButton from "./components/LoginButton";
+
 export const metadata = {
   title: "letz Shop Together",
   description: "Directly From Japan"
@@ -31,7 +34,10 @@ export default function RootLayout({children}) {
               <TbPencilCheck />
               <span>New</span>
             </NavLink>
-            <NavLink href="/login">Login</NavLink>
+            {/*<NavLink href="/login" onclick={}>
+              Login
+            </NavLink>*/}
+            <LoginButton />
           </Nav>
           {children}
         </Providers>
