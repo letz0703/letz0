@@ -2,7 +2,8 @@ import {cn} from "@/lib/utils";
 import {Inter} from "next/font/google";
 import "./globals.css";
 import {Nav, NavLink} from "./components/Nav";
-
+import {Button} from "@/components/ui/button";
+import {TbPencilCheck} from "react-icons/tb";
 const inter = Inter({subsets: ["latin"], variable: "--font-sans"});
 
 export const metadata = {
@@ -15,14 +16,21 @@ export default function RootLayout({children}) {
     <html lang="en">
       <body
         className={cn(
-          "bg-green-400 min-h-screen font-sans antialiased",
+          "bg-green-400 min-h-screen font-sans antialiased ovreflow-x-hidden p-2 font-semibold",
           inter.variable
         )}
       >
-        <Nav>
-          <NavLink href="/">Home</NavLink>
-          <NavLink href="/">Products</NavLink>
-          <NavLink href="/">My Orders</NavLink>
+        <Nav className="flex items-center justify-between gap-4 bg-red-100  border-b border-gray-300">
+          <NavLink href="/" className="text-blue-600">
+            Home
+          </NavLink>
+          <NavLink href="/products">Items</NavLink>
+          <NavLink href="/carts">Carts</NavLink>
+          <NavLink href="/products/new" className="flex items-center gap-2">
+            <TbPencilCheck />
+            <span>New</span>
+          </NavLink>
+          <NavLink href="/login">Login</NavLink>
         </Nav>
         {children}
       </body>

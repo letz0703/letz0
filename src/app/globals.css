@@ -9,7 +9,7 @@
     background-image: url("/main.jpg");
     margin: 0;
     padding: 0;
-    width: 100vw;
+    /*width: 100vw;*/
     height: 100vh;
   }
 }
@@ -35,10 +35,14 @@ body {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  @apply flex flex-col items-center;
 }
 
+#root {
+  @apply w-full max-w-screen-2xl;
+}
 .container {
-  @apply relative flex flex-col justify-center items-center h-screen w-screen;
+  @apply mx-auto text-center;
 }
 
 .title {
@@ -47,7 +51,7 @@ body {
 
 .backgroundDesktop2,
 .backgroundMobile {
-  @apply absolute w-full h-full top-0 left-0 z-0 bg-cover bg-center bg-no-repeat;
+  @apply absolute w-full h-full top-0 left-0 z-0 bg-cover bg-center bg-no-repeat overflow-x-hidden;
 }
 
 .element {
@@ -74,10 +78,10 @@ body {
   }
 }
 .divOverlay {
-  position: "relative";
-  width: "100%";
-  max-width: "100vw";
-  height: "auto";
+  position: overlay;
+  width: 100%;
+  max-width: 100vw;
+  height: auto;
 }
 
 .overlayText {
@@ -166,5 +170,5 @@ body {
 }
 
 .menu-container {
-  overflow: visiable;
+  overflow: visible;
 }

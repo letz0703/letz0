@@ -24,6 +24,7 @@ module.exports = {
       },
       colors: {
         background: "hsl(var(--background))",
+        brand: "#c10002",
         foreground: "hsl(var(--foreground))",
         card: {
           DEFAULT: "hsl(var(--card))",

@@ -11,15 +11,19 @@ export function Nav({children}: {children: ReactNode}) {
     </nav>
   );
 }
-
-export function NavLink(props: Omit<ComponentProps<typeof Link>, "className">) {
+export function NavLink({
+  className,
+  ...props
+}: Omit<ComponentProps<typeof Link>, "className"> & {className?: string}) {
   const pathname = usePathname();
+
   return (
     <Link
       {...props}
       className={cn(
         "p-4 hover:bg-secondary hover:text-secondary-foreground focus-visible:bg-secondary focus-visible:text-secondary-foreground",
-        pathname === props.href && "bg-background text-foreground"
+        pathname === props.href && "bg-background text-foreground",
+        className // 외부에서 전달된 className도 포함
       )}
     />
   );

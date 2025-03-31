@@ -22,18 +22,15 @@ export default async function Home() {
   const popularProduct = await getMostPopularProducts();
   const newestProducts = await getNewestProducts();
   return (
-    <div className="container">
+    <div className="container ">
       <div className={gowoon.className} style={{fontSize: "2em"}}>
-        곤약젤리
+        곤약젤리 공동구매
       </div>
       <div
         className={inter.className}
         style={{fontSize: "1.4em", color: "gray"}}
       >
-        개당 3000 + 택배비 4000원(공동구매시 무료)
-      </div>
-      <div>
-        다른 상품들도 함께 배송해 드립니다 → youtube.com@icanmartkorea 참고
+        개당 3000원
       </div>
       <div className="linkContainer pt-2">
         <a
@@ -42,7 +39,7 @@ export default async function Home() {
           rel="noopener noreferrer"
           target="_blank"
         >
-          해외공동구매 안내
+          택배비: 0원 - 조건별
         </a>
       </div>
       <br />
@@ -57,9 +54,6 @@ export default async function Home() {
         </a>
 
         {/*<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="rainskiss" data-description="Support me on Buy me a coffee!" data-message="" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>*/}
-      </div>
-      <div>
-        등록되어 있는 아이템및 깡통시장에 있는 제품은 모두 택배 가능합니다.
       </div>
       <br />
       <ProductGridSection title="Popular" products={popularProduct} />
