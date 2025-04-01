@@ -9,22 +9,18 @@ export default function LoginButton() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    onUserStateChange(u => setUser(u ?? null)); // ✅ 중복 변수명 제거
+    onUserStateChange(setUser); // ✅ 중복 변수명 제거
   }, []);
-
-  const handleLogin = () => login().then(u => setUser(u ?? null));
-  const handleLogout = () => logout().then(() => setUser(null));
-  console.log(user);
 
   return (
     <>
       {!user && (
-        <button onClick={handleLogin} className="text-white px-4 py-2">
+        <button onClick={login} className="text-white px-4 py-2">
           Login
         </button>
       )}
       {user && (
-        <button onClick={handleLogout} className="text-white px-4 py-2">
+        <button onClick={logout} className="text-white px-4 py-2">
           Logout
         </button>
       )}

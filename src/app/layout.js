@@ -7,7 +7,6 @@ import {TbPencilCheck} from "react-icons/tb";
 const inter = Inter({subsets: ["latin"], variable: "--font-sans"});
 import {SessionProvider} from "next-auth/react";
 import {Providers} from "./providers";
-import {login} from "../api/firebase";
 import LoginButton from "./components/LoginButton";
 
 export const metadata = {

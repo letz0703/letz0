@@ -1,8 +1,9 @@
 "use client";
+import {onUserStateChange} from "@/api/firebase";
 import {cn} from "@/lib/utils";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
-import {ComponentProps, ReactNode} from "react";
+import {ComponentProps, ReactNode, useEffect, useState} from "react";
 
 export function Nav({children}: {children: ReactNode}) {
   return (
@@ -11,6 +12,7 @@ export function Nav({children}: {children: ReactNode}) {
     </nav>
   );
 }
+
 export function NavLink({
   className,
   ...props
