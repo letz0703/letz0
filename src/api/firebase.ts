@@ -18,7 +18,8 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "",
   appId: process.env.NEXT_PUBLIC_FIREBASE_APPID || ""
 };
-
+import {set} from "firebase/database";
+import {v4 as uuid} from "uuid";
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 
@@ -78,4 +79,20 @@ export default async function getJapitemsFromFirebase() {
     console.error("Error fetching japitems from Firebase:", error);
     return []; // 에러 발생 시 빈 배열 반환
   }
+}
+type Product = {
+  title: string;
+  price: string;
+  options: string;
+  [key: string]: any;
+};
+export async function addNewProduct(product: Product, image: string) {
+  const id = uuid();
+  return set(ref(database, `products/${id}`), {
+    ...product,
+    id,
+    price: parseInt(product.price),
+    image,
+    options: product.options.split(",")
+  });
 }

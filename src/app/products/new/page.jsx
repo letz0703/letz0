@@ -1,7 +1,8 @@
+"use client";
 import React, {useState} from "react";
-import {uploadImage} from "../api/uploader";
-import Button from "../components/ui/Button";
-import {addNewProduct} from "../../../api/firebase";
+//import {uploadImage} from "../api/uploader";
+import {addNewProduct} from "@/api/firebase";
+import Button2 from "@/components/ui/jbutton";
 
 export default function NewProduct() {
   const [product, setProduct] = useState({});
@@ -93,7 +94,7 @@ export default function NewProduct() {
           required
           onChange={handleChange}
         />
-        <Button
+        <Button2
           text={isUploading ? "업로드중..." : "제품 등록하기"}
           disabled={isUploading}
         />

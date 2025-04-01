@@ -29,6 +29,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "types/**/*.d.ts" // ✅ 커스텀 타입 정의 폴더 포함
-  ],
+, "src/app/new-product/page.jsx"  ],
   "exclude": ["node_modules"]
 }

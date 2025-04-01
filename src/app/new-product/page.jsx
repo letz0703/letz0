@@ -1,7 +1,7 @@
 import React, {useState} from "react";
+import {addNewProduct} from "../api/firebase";
 import {uploadImage} from "../api/uploader";
 import Button from "../components/ui/Button";
-import {addNewProduct} from "../../../api/firebase";
 
 export default function NewProduct() {
   const [product, setProduct] = useState({});
