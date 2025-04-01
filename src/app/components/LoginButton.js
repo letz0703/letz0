@@ -5,9 +5,12 @@ import {signIn, signOut, useSession} from "next-auth/react";
 export default function LoginButton() {
   const {data: session} = useSession();
 
+  console.log(session);
+
   return session ? (
     <div className="flex gap-2 items-center">
-      <p>Welcome, {session.user?.email}</p>
+      {/*<p>Welcome, {session.user?.email}</p>*/}
+      <p>{session.user?.name}</p>
       <button onClick={() => signOut()}>Logout</button>
     </div>
   ) : (

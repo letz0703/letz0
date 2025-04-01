@@ -3,6 +3,7 @@
 import {useEffect, useState} from "react";
 import {login, logout, onUserStateChange} from "@/api/firebase";
 import {User} from "firebase/auth";
+import {useSession} from "next-auth/react";
 
 export default function LoginButton() {
   const [user, setUser] = useState<User | null>(null);
@@ -13,6 +14,7 @@ export default function LoginButton() {
 
   const handleLogin = () => login().then(u => setUser(u ?? null));
   const handleLogout = () => logout().then(() => setUser(null));
+  console.log(user);
 
   return (
     <>
