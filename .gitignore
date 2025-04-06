@@ -38,3 +38,4 @@ next-env.d.ts
 /public/products
 .env.local
 /prisma/dev.db
+.env

@@ -2,6 +2,7 @@ import db from "@/db/db";
 import {gowoon, inter} from "./font";
 import "./globals.css";
 import {Product} from "@prisma/client";
+import {ProductCard} from "@/components/ProductCard";
 
 function getMostPopularProducts() {
   return db.product.findMany({
@@ -72,9 +73,10 @@ function ProductGridSection({products, title}: ProductGridSectionProps) {
         <div className="text-3xl font-bold">{title}</div>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        {products?.map(product => (
+        <ProductCard />
+        {/*{products?.map(product => (
           <div key={product.id}>{product.name}</div>
-        ))}
+        ))}*/}
       </div>
     </div>
   );

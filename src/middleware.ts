@@ -37,3 +37,6 @@ async function isAuthenticated(req: NextRequest) {
 export const config = {
   matcher: "/admin/:path*"
 };
+
+
+//https://youtu.be/iqrgggs0Qk0?t=6326 WDS 강의 미들웨어. /admin 암호화

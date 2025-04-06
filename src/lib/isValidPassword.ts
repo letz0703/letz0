@@ -7,12 +7,13 @@ export async function isValidPassword(
 }
 
 async function hashPassword(password: string) {
+  //https://youtu.be/iqrgggs0Qk0?t=6326
   const arrayBuffer = await crypto.subtle.digest(
     "SHA-512",
     new TextEncoder().encode(password)
   );
 
-  console.log(arrayBuffer);
+  //console.log(arrayBuffer);
 
   return Buffer.from(arrayBuffer).toString("base64");
 }
