@@ -185,3 +185,6 @@ async function ProductSuspense({
 
 //https://youtu.be/iqrgggs0Qk0?t=6958 2025.04.06 일 wds
 //https://youtu.be/iqrgggs0Qk0?t=7202 Skeleton
+function wait(duration: number) {
+  return new Promise(res => setTimeout(res, duration))
+}

@@ -1,4 +1,8 @@
+Delay : Artificial Delay
+https://youtu.be/iqrgggs0Qk0?t=7253
+
 Q2025.04.06  picture size 가 옆으로 퍼짐.
+
 A2025.04.06 object-contain
 
 2025.04.01 화 RESTART
