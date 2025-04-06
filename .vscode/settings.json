@@ -181,7 +181,7 @@
   "editor.tabCompletion": "onlySnippets",
   "editor.lineNumbers": "on",
   "emmet.triggerExpansionOnTab": true,
-  "prettier.semi": true,
+  "prettier.semi": false,
   "zenMode.hideLineNumbers": true,
   "accessibility.signals.lineHasInlineSuggestion": {
     "sound": "off"

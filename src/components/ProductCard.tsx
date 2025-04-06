@@ -27,19 +27,24 @@ export function ProductCard({
   imagePath
 }: ProductCardProps) {
   return (
-    <Card className="flex overflow-hidden flex-col">
-      <div className="relative w-full h-auto aspect-video">
-        <Image src={imagePath} fill alt={name} />
+    <Card className="flex flex-col w-44 h-[350px] overflow-hidden">
+      <div className="relative w-full aspect-[4/5] bg-white p-2">
+        <Image src={imagePath} fill alt={name} className="object-contain" />
       </div>
-      <CardHeader>
-        <CardTitle>{name}</CardTitle>
-        <CardDescription>{formatCurrency(priceInCents / 100)}</CardDescription>
+
+      <CardHeader className="py-2 px-4">
+        <CardTitle className="text-sm">{name}</CardTitle>
+        <CardDescription className="text-xs">
+          {formatCurrency(priceInCents / 100)}
+        </CardDescription>
       </CardHeader>
-      <CardContent className="flex-grow">
-        <p className="line-clamp-4">{description}</p>
+
+      <CardContent className="flex-grow overflow-hidden px-4">
+        <p className="text-xs line-clamp-3">{description}</p>
       </CardContent>
-      <CardFooter>
-        <Button asChild size="lg" className="w-full">
+
+      <CardFooter className="px-4 pb-4 mt-auto">
+        <Button asChild size="lg" className="w-full text-xs">
           <Link href={`/products/${id}/purchase`}>Purchase</Link>
         </Button>
       </CardFooter>

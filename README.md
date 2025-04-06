@@ -1,3 +1,6 @@
+Q2025.04.06  picture size 가 옆으로 퍼짐.
+A2025.04.06 object-contain
+
 2025.04.01 화 RESTART
 # DB 구성
 

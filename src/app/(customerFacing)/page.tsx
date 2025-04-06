@@ -1,48 +1,26 @@
-import db from "@/db/db";
-import {orderBy} from "firebase/firestore";
-import {gowoon, inter} from "../font";
-import "../globals.css";
-import {Product} from "@prisma/client";
-import {Button} from "@/components/ui/button";
-import Link from "next/link";
-import {ArrowRight} from "lucide-react";
-import {ProductCard} from "@/components/ProductCard";
-import AdminLink from "./AdminLink";
+import db from "@/db/db"
+import {orderBy} from "firebase/firestore"
+import {gowoon, inter} from "../font"
+import "../globals.css"
+import {Product} from "@prisma/client"
+import {Button} from "@/components/ui/button"
+import Link from "next/link"
+import {ArrowRight} from "lucide-react"
+import {ProductCard, ProductCardSkeleton} from "@/components/ProductCard"
+import AdminLink from "./AdminLink"
+import {Suspense} from "react"
 
 function getNewestProducts() {
-  return db.product.findMany({orderBy: {orders: {_count: "desc"}}, take: 6});
+  return db.product.findMany({orderBy: {orders: {_count: "desc"}}, take: 6})
 }
 function getMostPopularProducts() {
   return db.product.findMany({
     where: {isAvailableForPurchase: true},
     orderBy: {orders: {_count: "desc"}},
     take: 6
-  });
+  })
 }
-async function ProductGridSection({
-  productFetcher,
-  title
-}: ProductGridSectionProps) {
-  const products = await productFetcher();
-  return (
-    <div className="space-4">
-      <div className="flex gap4">
-        <h2 className="text-3xl font-bold">{title}</h2>
-        <Button variant="outline" asChild>
-          <Link href="/products" className="space-x-2">
-            <span>View All</span>
-            <ArrowRight className="size-4" />
-          </Link>
-        </Button>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        {products.map(row => (
-          <ProductCard key={row.id} {...row} />
-        ))}
-      </div>
-    </div>
-  );
-}
+
 export default function Homepage() {
   return (
     <main className="space-y-12">
@@ -62,12 +40,58 @@ export default function Homepage() {
         //}}
       />
     </main>
-  );
+  )
 }
 type ProductGridSectionProps = {
-  title: string;
-  productFetcher: () => Promise<Product[]>;
-};
+  title: string
+  productFetcher: () => Promise<Product[]>
+}
+
+function ProductGridSection({productFetcher, title}: ProductGridSectionProps) {
+  const products = productFetcher()
+  return (
+    <div className="space-4">
+      <div className="flex gap4">
+        <h2 className="text-3xl font-bold">{title}</h2>
+        <Button variant="outline" asChild>
+          <Link href="/products" className="space-x-2">
+            <span>View All</span>
+            <ArrowRight className="size-4" />
+          </Link>
+        </Button>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 place-items-center">
+        <Suspense
+          fallback={
+            <>
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+            </>
+          }
+        >
+          <ProductSuspense productFetcher={productFetcher} />
+          {/*{(await productFetcher()).map(product => (
+            <ProductCardSkeleton key={product.id} {...product} />
+          ))}*/}
+        </Suspense>
+        {/*{products.map(row => (
+          //<ProductCard key={row.id} {...row} />
+          <ProductSuspense productFetcher={productFetcher} />
+        ))}*/}
+      </div>
+    </div>
+  )
+}
+async function ProductSuspense({
+  productFetcher
+}: {
+  productFetcher: () => Promise<Product[]>
+}) {
+  return (await productFetcher()).map(row => (
+    <ProductCard key={row.id} {...row} />
+  ))
+}
 
 //import Link from "next/link";
 //import {Button} from "@/components/ui/button";
@@ -160,3 +184,4 @@ type ProductGridSectionProps = {
 //}
 
 //https://youtu.be/iqrgggs0Qk0?t=6958 2025.04.06 일 wds
+//https://youtu.be/iqrgggs0Qk0?t=7202 Skeleton
