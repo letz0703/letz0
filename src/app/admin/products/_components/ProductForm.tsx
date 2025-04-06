@@ -30,7 +30,6 @@ export function ProductForm({product}: {product?: Product | null}) {
         />
         {error.name && <div className="text-destructive">{error.name}</div>}
       </div>
-
       <div className="space-y-2">
         <Label htmlFor="priceInCents">Price In Cents</Label>
         <Input
@@ -47,7 +46,6 @@ export function ProductForm({product}: {product?: Product | null}) {
           )}
         </div>
       </div>
-
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
         <Textarea
@@ -60,7 +58,6 @@ export function ProductForm({product}: {product?: Product | null}) {
           <div className="text-destructive">{error.description}</div>
         )}
       </div>
-
       <div className="space-y-2">
         <Label htmlFor="file">File</Label>
         <input type="file" id="file" name="file" required={product == null} />
@@ -69,7 +66,6 @@ export function ProductForm({product}: {product?: Product | null}) {
         )}
         {error.file && <div className="text-destructive">{error.file}</div>}
       </div>
-
       <div className="space-y-2">
         <Label htmlFor="image">Image</Label>
         <input type="file" id="image" name="image" required={product == null} />
@@ -83,8 +79,7 @@ export function ProductForm({product}: {product?: Product | null}) {
         )}
         {error.image && <div className="text-destructive">{error.image}</div>}
       </div>
-
-      <SubmitButton />
+      <SubmitButton /> // https://youtu.be/iqrgggs0Qk0?t=3714
     </form>
   );
 }

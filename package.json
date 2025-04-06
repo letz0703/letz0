@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint"
   },
+
+  "type": "module",
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.9.2",
     "@prisma/client": "6.5.0",

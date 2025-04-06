@@ -22,7 +22,7 @@ import {
   ActiveToggleDropdownItem,
   DeleteDropdownItem
 } from "./_components/ProductActions";
-import {PageHeader} from "../_components/pageHeader";
+import {PageHeader} from "../_components/PageHeader";
 
 export default function AdminProductsPage() {
   return (

@@ -11,6 +11,7 @@ export async function middleware(req: NextRequest) {
 }
 
 async function isAuthenticated(req: NextRequest) {
+  //return Promise.resolve(false);
   const authHeader =
     req.headers.get("authorization") || req.headers.get("Authorization");
 
@@ -19,6 +20,10 @@ async function isAuthenticated(req: NextRequest) {
   const [username, password] = Buffer.from(authHeader.split(" ")[1], "base64")
     .toString()
     .split(":");
+
+  //isValidPassword(password, "sdfkdf");
+
+  //return false;
 
   return (
     username === process.env.ADMIN_USERNAME &&

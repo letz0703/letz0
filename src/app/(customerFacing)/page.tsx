@@ -1,5 +1,5 @@
 import db from "@/db/db";
-import {gowoon, inter} from "./font";
+import {gowoon, inter} from "../font";
 import "./globals.css";
 import {Product} from "@prisma/client";
 
@@ -24,13 +24,13 @@ export default async function Home() {
   return (
     <div className="container ">
       <div className={gowoon.className} style={{fontSize: "2em"}}>
-        곤약젤리
+        곤약젤리 공동구매
       </div>
       <div
         className={inter.className}
         style={{fontSize: "1.4em", color: "gray"}}
       >
-        개당 3000원 + 택배비4000원
+        개당 3000원
       </div>
       <div className="linkContainer pt-2">
         <a
@@ -39,7 +39,7 @@ export default async function Home() {
           rel="noopener noreferrer"
           target="_blank"
         >
-          택배비: 0원 만들기
+          택배비: 0원 - 조건별
         </a>
       </div>
       <br />

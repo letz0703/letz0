@@ -1,64 +1,97 @@
-"use client";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
+import db from "@/db/db";
+import {formatCurrency, formatNumber} from "@/lib/formatters";
 
-import {useState, useEffect} from "react";
-import Dashboard from "./Dashboard";
+async function getSalesData() {
+  const data = await db.order.aggregate({
+    _sum: {pricePaidInCents: true},
+    _count: true
+  });
 
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
-
-export default function AdminPage() {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [inputPassword, setInputPassword] = useState("");
-
-  useEffect(() => {
-    const stored = localStorage.getItem("admin-auth");
-    if (stored === "true") setAuthenticated(true);
-  }, []);
-
-  const handleLogin = () => {
-    if (inputPassword === ADMIN_PASSWORD) {
-      localStorage.setItem("admin-auth", "true");
-      setAuthenticated(true);
-    } else {
-      alert("비밀번호가 틀렸습니다.");
-    }
+  return {
+    amount: (data._sum.pricePaidInCents || 0) / 100,
+    numberOfSales: data._count
   };
+}
 
-  const handleLogout = () => {
-    localStorage.removeItem("admin-auth");
-    setAuthenticated(false);
-    setInputPassword("");
+async function getUserData() {
+  const [userCount, orderData] = await Promise.all([
+    db.user.count(),
+    db.order.aggregate({
+      _sum: {pricePaidInCents: true}
+    })
+  ]);
+
+  return {
+    userCount,
+    averageValuePerUser:
+      userCount === 0
+        ? 0
+        : (orderData._sum.pricePaidInCents || 0) / userCount / 100
   };
+}
 
-  if (!authenticated) {
-    return (
-      <div className="p-6 flex flex-col items-start gap-4">
-        <h1 className="text-white text-xl font-bold">관리자 로그인</h1>
-        <input
-          type="password"
-          placeholder="비밀번호 입력"
-          value={inputPassword}
-          onChange={e => setInputPassword(e.target.value)}
-          className="px-4 py-2 rounded border border-gray-500"
-        />
-        <button
-          onClick={handleLogin}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          로그인
-        </button>
-      </div>
-    );
-  }
+async function getProductData() {
+  const [activeCount, inactiveCount] = await Promise.all([
+    db.product.count({where: {isAvailableForPurchase: true}}),
+    db.product.count({where: {isAvailableForPurchase: false}})
+  ]);
+
+  return {activeCount, inactiveCount};
+}
+
+export default async function AdminDashboard() {
+  const [salesData, userData, productData] = await Promise.all([
+    getSalesData(),
+    getUserData(),
+    getProductData()
+  ]);
 
   return (
-    <div className="p-6">
-      <button
-        onClick={handleLogout}
-        className="mb-4 bg-red-600 text-white px-4 py-2 rounded"
-      >
-        로그아웃
-      </button>
-      <Dashboard />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <DashboardCard
+        title="Sales"
+        subtitle={`${formatNumber(salesData.numberOfSales)} Orders`}
+        body={formatCurrency(salesData.amount)}
+      />
+      <DashboardCard
+        title="Customers"
+        subtitle={`${formatCurrency(
+          userData.averageValuePerUser
+        )} Average Value`}
+        body={formatNumber(userData.userCount)}
+      />
+      <DashboardCard
+        title="Active Products"
+        subtitle={`${formatNumber(productData.inactiveCount)} Inactive`}
+        body={formatNumber(productData.activeCount)}
+      />
     </div>
+  );
+}
+
+type DashboardCardProps = {
+  title: string;
+  subtitle: string;
+  body: string;
+};
+
+function DashboardCard({title, subtitle, body}: DashboardCardProps) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{subtitle}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p>{body}</p>
+      </CardContent>
+    </Card>
   );
 }

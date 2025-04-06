@@ -2,11 +2,12 @@
 
 import db from "@/db/db";
 import {z} from "zod";
-import fs from "fs/promises";
+import fs from "fs/promises"; // https://youtu.be/iqrgggs0Qk0?t=3425
 import {notFound, redirect} from "next/navigation";
 import {revalidatePath} from "next/cache";
 
 const fileSchema = z.instanceof(File, {message: "Required"});
+
 const imageSchema = fileSchema.refine(
   file => file.size === 0 || file.type.startsWith("image/")
 );
@@ -29,12 +30,14 @@ export async function addProduct(prevState: unknown, formData: FormData) {
 
   await fs.mkdir("products", {recursive: true});
   const filePath = `products/${crypto.randomUUID()}-${data.file.name}`;
+  //@ts-ignore
   await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()));
 
   await fs.mkdir("public/products", {recursive: true});
   const imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`;
   await fs.writeFile(
     `public${imagePath}`,
+    //@ts-ignore
     Buffer.from(await data.image.arrayBuffer())
   );
 
@@ -76,19 +79,23 @@ export async function updateProduct(
   if (product == null) return notFound();
 
   let filePath = product.filePath;
+
   if (data.file != null && data.file.size > 0) {
+    const file = data.file as File;
     await fs.unlink(product.filePath);
-    filePath = `products/${crypto.randomUUID()}-${data.file.name}`;
-    await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()));
+    filePath = `products/${crypto.randomUUID()}-${file.name}`;
+    await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
   }
 
   let imagePath = product.imagePath;
+
   if (data.image != null && data.image.size > 0) {
+    const image = data.image as File;
     await fs.unlink(`public${product.imagePath}`);
-    imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`;
+    imagePath = `/products/${crypto.randomUUID()}-${image.name}`;
     await fs.writeFile(
       `public${imagePath}`,
-      Buffer.from(await data.image.arrayBuffer())
+      Buffer.from(await image.arrayBuffer())
     );
   }
 

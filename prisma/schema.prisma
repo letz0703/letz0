@@ -37,6 +37,9 @@ model Order {
   pricePaidInCents Int
   createAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  customNo String @unique
+  deliverTo String @unique
+  deliverToNo String @unique
 
   userId String
   productId String
