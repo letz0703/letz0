@@ -1,27 +1,27 @@
-import db from "@/db/db";
-import {gowoon, inter} from "./font";
-import "./globals.css";
-import {Product} from "@prisma/client";
-import {ProductCard} from "@/components/ProductCard";
+import db from "@/db/db"
+import {gowoon, inter} from "./font"
+import "./globals.css"
+import {Product} from "@prisma/client"
+import {ProductCard} from "@/components/ProductCard"
 
 function getMostPopularProducts() {
   return db.product.findMany({
     where: {isAvailableForPurchase: true},
     orderBy: {orders: {_count: "desc"}},
     take: 6
-  });
+  })
 }
 function getNewestProducts() {
   return db.product.findMany({
     where: {isAvailableForPurchase: true},
     orderBy: {createdAt: "desc"},
     take: 6
-  });
+  })
 }
 
 export default async function Home() {
-  const popularProduct = await getMostPopularProducts();
-  const newestProducts = await getNewestProducts();
+  const popularProduct = await getMostPopularProducts()
+  const newestProducts = await getNewestProducts()
   return (
     <div className="container ">
       <div className={gowoon.className} style={{fontSize: "2em"}}>
@@ -60,12 +60,12 @@ export default async function Home() {
       <ProductGridSection title="Popular" products={popularProduct} />
       <ProductGridSection title="New" products={newestProducts} />{" "}
     </div>
-  );
+  )
 }
 type ProductGridSectionProps = {
-  title: string;
-  products: Product[];
-};
+  title: string
+  products: Product[]
+}
 function ProductGridSection({products, title}: ProductGridSectionProps) {
   return (
     <div className="space-y-4">
@@ -79,5 +79,5 @@ function ProductGridSection({products, title}: ProductGridSectionProps) {
         ))}*/}
       </div>
     </div>
-  );
+  )
 }
