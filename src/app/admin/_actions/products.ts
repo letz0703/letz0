@@ -53,7 +53,7 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   });
 
   revalidatePath("/");
-  revalidatePath("/products");
+  revalidatePath("/products");//https://youtu.be/iqrgggs0Qk0?t=7768
 
   redirect("/admin/products");
 }
