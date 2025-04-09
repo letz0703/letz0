@@ -1,5 +1,6 @@
 //"use client"
 //import {Button} from "@/components/ui/button"
+import {Button} from "@/components/ui/button"
 import db from "@/db/db"
 import {formatCurrency} from "@/lib/formatters"
 import Image from "next/image"
@@ -9,6 +10,7 @@ import Stripe from "stripe"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 //install and run test at local : https://youtu.be/fgbEwVWlpsI?t=136
+
 export default async function SuccessPage({
   searchParams
 }: {
@@ -48,7 +50,7 @@ export default async function SuccessPage({
           <div className="line-clamp-3 text-muted-foreground">
             {product.description}
           </div>
-          {/*<Button className="mt-4" size="lg" asChild>
+          <Button className="mt-4" size="lg" asChild>
             {isSuccess ? (
               <a
                 href={`/products/download/${await createDownloadVerification(
@@ -60,7 +62,7 @@ export default async function SuccessPage({
             ) : (
               <Link href={`/products/${product.id}/purchase`}>Try Again</Link>
             )}
-          </Button>*/}
+          </Button>
         </div>
       </div>
     </div>
